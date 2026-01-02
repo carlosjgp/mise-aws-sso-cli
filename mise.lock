@@ -1,0 +1,19 @@
+[[tools.actionlint]]
+version = "1.7.10"
+backend = "aqua:rhysd/actionlint"
+
+[[tools.hk]]
+version = "1.18.3"
+backend = "aqua:jdx/hk"
+
+[[tools.lua]]
+version = "5.4.2"
+backend = "asdf:lua"
+
+[[tools.pkl]]
+version = "0.30.2"
+backend = "aqua:apple/pkl"
+
+[[tools.stylua]]
+version = "2.3.1"
+backend = "aqua:JohnnyMorganz/StyLua"

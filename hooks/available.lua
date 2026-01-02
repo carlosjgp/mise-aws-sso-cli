@@ -2,16 +2,16 @@
 -- Returns a list of available versions for the tool
 -- Documentation: https://mise.jdx.dev/tool-plugin-development.html#available-hook
 
-function PLUGIN:Available(ctx)
+function fetch_versions_from_api(ctx)
     local http = require("http")
     local json = require("json")
 
     -- Example 1: GitHub Tags API (most common)
-    -- Replace <GITHUB_USER>/<GITHUB_REPO> with your tool's repository
-    local repo_url = "https://api.github.com/repos/<GITHUB_USER>/<GITHUB_REPO>/tags"
+    -- Replace carlosjgp/mise-aws-sso-cli with your tool's repository
+    local repo_url = "https://api.github.com/repos/synfinatic/aws-sso-cli/tags"
 
     -- Example 2: GitHub Releases API (for tools that use GitHub releases)
-    -- local repo_url = "https://api.github.com/repos/<GITHUB_USER>/<GITHUB_REPO>/releases"
+    -- local repo_url = "https://api.github.com/repos/synfinatic/aws-sso-cli/releases"
 
     -- mise automatically handles GitHub authentication - no manual token setup needed
     local resp, err = http.get({
@@ -33,7 +33,7 @@ function PLUGIN:Available(ctx)
         local version = tag_info.name
 
         -- Clean up version string (remove 'v' prefix if present)
-        -- version = version:gsub("^v", "")
+        version = version:gsub("^v", "")
 
         -- For releases API, you might want:
         -- local version = tag_info.tag_name:gsub("^v", "")
@@ -48,4 +48,26 @@ function PLUGIN:Available(ctx)
     end
 
     return result
+end
+
+-- Cache versions for 12 hours
+local cache = {}
+local cache_ttl = 12 * 60 * 60 -- 12 hours in seconds
+
+function PLUGIN:Available(ctx)
+    local now = os.time()
+
+    -- Check cache first
+    if cache.versions and cache.timestamp and (now - cache.timestamp) < cache_ttl then
+        return cache.versions
+    end
+
+    -- Fetch fresh data
+    local versions = fetch_versions_from_api(ctx)
+
+    -- Update cache
+    cache.versions = versions
+    cache.timestamp = now
+
+    return versions
 end

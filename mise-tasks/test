@@ -2,17 +2,17 @@
 #MISE description="Run plugin tests - install and execute tool"
 set -euo pipefail
 
-mise plugin link --force <TOOL> .
+mise plugin link --force aws-sso-cli .
 mise cache clear
-mise install <TOOL>@1.0.0
+mise install aws-sso-cli@2.1.0
 
 # Capture and display the output while also verifying it
-output=$(mise exec "<TOOL>@1.0.0" -- "<TOOL>" --version)
-echo "<TOOL> output: $output"
+output=$(mise exec "aws-sso-cli@2.1.0" -- "aws-sso" --version)
+echo "aws-sso-cli output: $output"
 
-if echo "$output" | grep -q '<TOOL>@1.0.0'; then
+if echo "$output" | grep -q 'aws-sso-cli@2.1.0'; then
     echo "✓ Tests passed"
 else
-    echo "✗ Test failed: expected version <TOOL>@1.0.0"
+    echo "✗ Test failed: expected version aws-sso-cli@2.1.0"
     exit 1
 fi
