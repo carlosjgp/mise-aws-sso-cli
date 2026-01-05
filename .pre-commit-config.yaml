@@ -1,4 +1,10 @@
+default_install_hook_types: [pre-commit, commit-msg]
 repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.0.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
   - repo: local
     hooks:
       - id: luacheck
@@ -21,3 +27,11 @@ repos:
         language: system
         files: '^\.github/workflows/.*\.(yml|yaml)$'
         pass_filenames: true
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
