@@ -9,6 +9,8 @@ on:
 
 jobs:
   ci:
+    permissions:
+      contents: read
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
