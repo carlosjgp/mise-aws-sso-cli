@@ -26,13 +26,7 @@ jobs:
         with:
           node-version: "lts/*"
       - name: Install dependencies
-        run: >-
-          npx --package
-            semantic-release
-            @semantic-release/git
-            @semantic-release/github
-            @semantic-release/changelog
-            conventional-changelog-conventionalcommits
+        run: npm install -D semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog conventional-changelog-conventionalcommits
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Release
